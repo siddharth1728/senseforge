@@ -81,6 +81,14 @@ class BaseEnvironment(ABC):
     def sim_time(self) -> float:
         return self._sim_time
 
+    @abstractmethod
+    def get_ground_truth_target(self, target_name: str) -> float:
+        """
+        Returns the true numerical value of a hidden parameter for scientific evaluation.
+        Accessible strictly to the independent evaluator boundary, never exposed via firewall.
+        """
+        pass
+
     @property
     def family(self) -> str:
         return self._config.family

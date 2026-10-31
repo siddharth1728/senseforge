@@ -107,3 +107,13 @@ class ThermodynamicSwarmEnvironment(BaseEnvironment):
     def total_observable_channels(self) -> int:
         return 4 * self._n_particles
 
+    def get_ground_truth_target(self, target_name: str = "epsilon") -> float:
+        """Ground truth extractor for scientific property estimation."""
+        if target_name in ["epsilon", "potential_depth"]:
+            return float(self._epsilon)
+        elif target_name in ["damping"]:
+            return float(self._damping)
+        elif target_name in ["sigma"]:
+            return float(self._sigma)
+        raise ValueError(f"Unknown ground truth target '{target_name}' for ThermodynamicSwarmEnvironment")
+

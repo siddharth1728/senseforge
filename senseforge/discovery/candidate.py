@@ -4,13 +4,16 @@ Represents the co-evolved pair Ψ = (Φ, Π) where Φ is the measurement operato
 and Π is the experimental intervention protocol.
 """
 
-from typing import Tuple, List, Dict, Any, Optional
+from typing import Tuple, List, Dict, Any, Optional, TYPE_CHECKING
 from enum import Enum
 import uuid
 from pydantic import BaseModel, Field
 
 from senseforge.genome.candidate import InstrumentGenome
 from senseforge.probes.genome import ProbeGenome
+
+if TYPE_CHECKING:
+    from senseforge.falsification.downstream import DownstreamEstimator
 
 
 class EpistemicState(str, Enum):
@@ -49,6 +52,7 @@ class PairedCandidate:
         generation: int = 0,
         parent_candidate_ids: Optional[Tuple[str, ...]] = None,
         state: EpistemicState = EpistemicState.GENERATED,
+        estimator: Optional[DownstreamEstimator] = None,
     ):
         self.candidate_id = candidate_id or f"pair_{uuid.uuid4().hex[:12]}"
         self.instrument = instrument
@@ -56,6 +60,7 @@ class PairedCandidate:
         self.generation = generation
         self.parent_candidate_ids = parent_candidate_ids or ()
         self.state = state
+        self.estimator = estimator
         self.fitness = CandidateFitness()
         self.evaluation_records: List[Dict[str, Any]] = []
 
@@ -68,9 +73,12 @@ class PairedCandidate:
         return self.instrument.complexity + self.probe.total_duration
 
     def clone(self) -> "PairedCandidate":
-        """Clones candidate with new ID and parent linkage, preserving fitness and evaluation records."""
+        """Clones candidate with new ID and parent linkage, preserving fitness, estimator and evaluation records."""
         cloned_inst = self.instrument.clone()
         cloned_probe = self.probe.clone()
+        cloned_estimator = None
+        if self.estimator is not None:
+            cloned_estimator = self.estimator.__class__.from_canonical_dict(self.estimator.to_canonical_dict())
         cand = PairedCandidate(
             instrument=cloned_inst,
             probe=cloned_probe,
@@ -78,6 +86,7 @@ class PairedCandidate:
             generation=self.generation,
             parent_candidate_ids=(self.candidate_id,),
             state=self.state,
+            estimator=cloned_estimator,
         )
         cand.fitness = self.fitness.model_copy()
         cand.evaluation_records = [dict(r) for r in self.evaluation_records]
@@ -87,7 +96,7 @@ class PairedCandidate:
 
     def to_canonical_dict(self) -> Dict[str, Any]:
         """Canonical dictionary representation for SQLite and JSON logging."""
-        return {
+        d = {
             "candidate_id": self.candidate_id,
             "generation": self.generation,
             "state": self.state.value,
@@ -97,11 +106,18 @@ class PairedCandidate:
             "probe": self.probe.to_canonical_dict(),
             "evaluation_count": len(self.evaluation_records),
         }
+        if self.estimator is not None:
+            d["estimator"] = self.estimator.to_canonical_dict()
+        return d
 
     @classmethod
     def from_canonical_dict(cls, d: Dict[str, Any]) -> "PairedCandidate":
         inst = InstrumentGenome.from_canonical_dict(d["instrument"])
         probe = ProbeGenome.from_canonical_dict(d["probe"])
+        est = None
+        if "estimator" in d and d["estimator"]:
+            from senseforge.falsification.downstream import DownstreamEstimator
+            est = DownstreamEstimator.from_canonical_dict(d["estimator"])
         cand = cls(
             instrument=inst,
             probe=probe,
@@ -109,6 +125,7 @@ class PairedCandidate:
             generation=d.get("generation", 0),
             parent_candidate_ids=tuple(d.get("parent_candidate_ids", ())),
             state=EpistemicState(d.get("state", EpistemicState.GENERATED.value)),
+            estimator=est,
         )
         cand.fitness = CandidateFitness.model_validate(d.get("fitness", {}))
         return cand

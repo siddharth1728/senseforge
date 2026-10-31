@@ -17,6 +17,11 @@ class WorldFoundry:
     """
 
     @staticmethod
+    def make_environment(config: EnvironmentConfig):
+        """Creates a raw procedural environment (used by evaluator)."""
+        return make_environment(config)
+
+    @staticmethod
     def spawn_sandboxed_environment(
         family: str,
         seed: int,

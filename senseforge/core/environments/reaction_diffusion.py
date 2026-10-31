@@ -71,3 +71,15 @@ class ReactionDiffusionEnvironment(BaseEnvironment):
     def total_observable_channels(self) -> int:
         return 2 * self._grid_size
 
+    def get_ground_truth_target(self, target_name: str = "feed_rate") -> float:
+        """Ground truth extractor for scientific property estimation."""
+        if target_name in ["feed_rate", "F"]:
+            return float(self._F)
+        elif target_name in ["kill_rate", "k"]:
+            return float(self._k)
+        elif target_name in ["diffusion_u", "Du"]:
+            return float(self._Du)
+        elif target_name in ["diffusion_v", "Dv"]:
+            return float(self._Dv)
+        raise ValueError(f"Unknown ground truth target '{target_name}' for ReactionDiffusionEnvironment")
+

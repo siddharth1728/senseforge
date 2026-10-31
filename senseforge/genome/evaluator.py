@@ -264,3 +264,7 @@ class SafeEvaluator:
         else:
             raise EvaluationError(f"Unknown node type: {type(node)}")
 
+
+# Alias for backward and cross-module compatibility
+ASTEvaluator = SafeEvaluator
+

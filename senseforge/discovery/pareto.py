@@ -148,6 +148,11 @@ class ParetoArchive:
     def size(self) -> int:
         return len(self.archive)
 
+    @property
+    def candidates(self) -> List[PairedCandidate]:
+        """Returns the list of current non-dominated candidates in the archive."""
+        return list(self.archive)
+
     def get_best_by_metric(self, metric: str) -> Optional[PairedCandidate]:
         if not self.archive:
             return None

@@ -1,3 +1,12 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+*partition_lock*.json
+*audit*.log
+
 # Logs
 logs
 *.log

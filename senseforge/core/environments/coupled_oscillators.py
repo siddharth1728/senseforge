@@ -87,3 +87,15 @@ class CoupledOscillatorsEnvironment(BaseEnvironment):
     def total_observable_channels(self) -> int:
         return 2 * self._n_oscillators
 
+    def get_ground_truth_target(self, target_name: str = "stiffness_0") -> float:
+        """Ground truth extractor for scientific property estimation."""
+        if target_name in ["stiffness_0", "k_0"]:
+            return float(self._k[0])
+        elif target_name in ["damping_0", "mu_0"]:
+            return float(self._mu[0])
+        elif target_name in ["nonlinear_stiffness_0", "beta_0"]:
+            return float(self._beta[0])
+        elif target_name in ["coupling", "c_coupling"]:
+            return float(self._c_coupling)
+        raise ValueError(f"Unknown ground truth target '{target_name}' for CoupledOscillatorsEnvironment")
+
