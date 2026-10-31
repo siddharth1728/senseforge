@@ -116,3 +116,4 @@ stateDiagram-v2
 4. **`INCONCLUSIVE`:** Shows positive skill but fails stringent statistical significance ($\alpha = 0.01$) or Holm-Bonferroni correction.
 5. **`PROVISIONAL_DISCOVERY`:** Decisively outperforms Baselines A–D and Ablations F–G across locked held-out seeds with $p_{\text{adj}} < 0.01$.
 6. **`GENERALIZED_DISCOVERY`:** Retains predictive skill across out-of-family environment transfers (M07).
+

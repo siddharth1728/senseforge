@@ -58,3 +58,4 @@ To prevent confirmation bias, SENSEFORGE explicitly establishes three adversaria
 | $\Delta \text{Skill} > 0.0$ but $0.01 \le p_{\text{adj}} < 0.05$ | Evidence is statistically inconclusive. | **`INCONCLUSIVE`** |
 | $\Delta \text{Skill} \ge 0.10$, $p_{\text{adj}} < 0.01$, $\text{CI}_{95, \text{low}} > 0$, beats Baselines A–G on Locked Partition ($N \ge 30$) | Rejects $H_{0-1}$ and $H_{0-2}$ within source family. | **`PROVISIONAL_DISCOVERY`** |
 | Meets Provisional criteria AND transfers to distinct family $\mathcal{F}_{\text{target}}$ with $\Delta \text{Skill}_{\text{target}} \ge 0.10$ and $p < 0.01$ | Rejects $H_{0-3}$; demonstrates general physical invariance. | **`GENERALIZED_DISCOVERY`** |
+

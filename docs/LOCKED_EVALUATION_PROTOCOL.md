@@ -80,3 +80,4 @@ Upon completion of the locked confirmatory test, a cryptographically signed mani
 - Full statistical telemetry across all 7 comparator baselines.
 - Transfer Lab performance across target environments.
 - **`manifest_signature`**: SHA-256 hash over the canonical JSON representation of the entire manifest.
+

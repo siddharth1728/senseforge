@@ -87,3 +87,4 @@ The **Holm-Bonferroni step-down procedure** controls the FWER at level $\alpha =
 3. Adjusted $p$-value:
    $$p_{(k)}^{\text{adj}} = \min\left(1.0, \max_{j \le k} \left( (M - j + 1) \cdot p_{(j)} \right)\right)$$
 4. If $p_{(k)} \le \alpha_k$, comparison $k$ is declared statistically significant; otherwise, stop and reject significance for all remaining $j \ge k$.
+

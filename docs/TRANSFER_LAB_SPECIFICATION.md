@@ -106,3 +106,4 @@ The Transfer Lab generates a complete $3 \times 3$ asymmetric transfer matrix $\
 $$\mathbf{T} = \begin{pmatrix} 1.00 & \text{TDR}_{\text{Osc}\to\text{RD}} & \text{TDR}_{\text{Osc}\to\text{Swarm}} \\ \text{TDR}_{\text{RD}\to\text{Osc}} & 1.00 & \text{TDR}_{\text{RD}\to\text{Swarm}} \\ \text{TDR}_{\text{Swarm}\to\text{Osc}} & \text{TDR}_{\text{Swarm}\to\text{RD}} & 1.00 \end{pmatrix}$$
 
 This matrix maps the conceptual topology of experimental knowledge transfer.
+

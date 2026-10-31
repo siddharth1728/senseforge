@@ -80,16 +80,15 @@ class FalsificationChamber:
         self,
         candidate: PairedCandidate,
         seeds: List[int],
-        shifted_params: Optional[Dict[str, float]] = None
+        shifted_params: Dict[str, float]
     ) -> List[float]:
         """TEST B: Evaluate candidate on unseen physical parameter regimes."""
         # Create a parameter-shifted environment
-        params = shifted_params or {"coupling": 1.25, "damping": 0.05}
         config = EnvironmentConfig(
             family=EnvironmentFamily.COUPLED_OSCILLATORS,
             seed=seeds[0],
             num_entities=8,
-            custom_params=params
+            custom_params=shifted_params
         )
         shifted_env = make_environment(config)
         shifted_firewall = ObservationFirewall(
