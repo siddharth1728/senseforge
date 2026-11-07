@@ -24,28 +24,28 @@ export const NavigationControls: React.FC<NavigationControlsProps> = ({
 
   return (
     <nav
-      className="fixed bottom-3 left-1/2 -translate-x-1/2 z-40 flex items-center gap-1.5 px-3 py-1.5 rounded-full glass-burgundy border border-gold-subtle/40 backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.6)]"
+      className="fixed bottom-2 sm:bottom-3 left-1/2 -translate-x-1/2 z-40 flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full glass-burgundy border border-gold-subtle/40 backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.7)]"
       aria-label="Scene progress"
     >
-      {SCENE_ORDER.map((item, index) => {
+      {SCENE_ORDER.map((item) => {
         const isActive = currentScene === item.id;
         return (
           <button
             key={item.id}
             onClick={() => onSelectScene(item.id)}
-            className={`group relative flex items-center justify-center p-1.5 rounded-full transition-all duration-300 focus:outline-none`}
+            className="group relative flex items-center justify-center p-1 sm:p-1.5 rounded-full transition-all duration-300 focus:outline-none"
             title={`Go to ${item.label}`}
             aria-label={`Go to ${item.label}`}
           >
             <span
               className={`block rounded-full transition-all duration-500 ${
                 isActive
-                  ? 'w-6 h-2 bg-gradient-to-r from-[#F3D99A] to-[#D9B66F] shadow-[0_0_8px_#F3D99A]'
-                  : 'w-2 h-2 bg-white/20 hover:bg-gold-champagne/60'
+                  ? 'w-4 sm:w-6 h-1.5 sm:h-2 bg-gradient-to-r from-[#F3D99A] to-[#D9B66F] shadow-[0_0_8px_#F3D99A]'
+                  : 'w-1.5 sm:w-2 h-1.5 sm:h-2 bg-white/25 hover:bg-gold-champagne/60'
               }`}
             />
             {/* Tooltip on hover */}
-            <span className="absolute -top-7 scale-0 group-hover:scale-100 transition-transform font-royal text-[10px] tracking-wider uppercase px-2 py-0.5 rounded bg-burgundy border border-gold-champagne/40 text-gold-warm shadow-md pointer-events-none whitespace-nowrap">
+            <span className="hidden sm:block absolute -top-7 scale-0 group-hover:scale-100 transition-transform font-royal text-[10px] tracking-wider uppercase px-2 py-0.5 rounded bg-burgundy border border-gold-champagne/40 text-gold-warm shadow-md pointer-events-none whitespace-nowrap">
               {item.label}
             </span>
           </button>
@@ -54,4 +54,3 @@ export const NavigationControls: React.FC<NavigationControlsProps> = ({
     </nav>
   );
 };
-

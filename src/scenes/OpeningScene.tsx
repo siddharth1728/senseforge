@@ -15,7 +15,6 @@ export const OpeningScene: React.FC<OpeningSceneProps> = ({ onProceed }) => {
 
   // Auto-awaken diya or allow tap
   useEffect(() => {
-    // Stage 1: Diya flame ignites with warmth
     const lightTimer = setTimeout(() => {
       handleIgnite();
     }, 1200);
@@ -45,7 +44,7 @@ export const OpeningScene: React.FC<OpeningSceneProps> = ({ onProceed }) => {
 
   return (
     <div
-      className={`min-h-screen w-full flex flex-col items-center justify-center px-4 py-8 relative overflow-hidden select-none transition-all duration-1000 ${
+      className={`min-h-[100dvh] w-full flex flex-col items-center justify-between sm:justify-center px-4 py-8 sm:py-10 pb-24 sm:pb-10 relative overflow-hidden select-none transition-all duration-1000 ${
         isExiting ? 'scale-105 opacity-0 blur-md' : 'opacity-100 scale-100'
       }`}
     >
@@ -59,28 +58,30 @@ export const OpeningScene: React.FC<OpeningSceneProps> = ({ onProceed }) => {
         }}
       />
 
+      <div className="hidden sm:block" />
+
       {/* Main Composition */}
-      <div className="relative z-20 flex flex-col items-center max-w-xl mx-auto text-center px-4">
-        {/* Centerpiece Diya */}
-        <div className="relative mb-8 transform transition-all duration-1000 ease-out">
+      <div className="relative z-20 flex flex-col items-center max-w-xl mx-auto text-center px-2 my-auto">
+        {/* Centerpiece Diya with Responsive Mobile Scaling */}
+        <div className="relative mb-4 sm:mb-8 transform transition-all duration-1000 ease-out scale-90 sm:scale-100">
           <DiyaGraphic
             isLit={isLit}
-            size="hero"
+            size="lg"
             showGlowSpread={true}
             onClick={!isLit ? handleIgnite : undefined}
             className="animate-float-slow"
           />
           {!isLit && (
-            <p className="mt-4 font-serif text-xs sm:text-sm tracking-widest uppercase text-gold-champagne/60 animate-pulse">
+            <p className="mt-2 font-serif text-[11px] sm:text-sm tracking-widest uppercase text-gold-champagne/70 animate-pulse">
               Touch the diya to kindle the light
             </p>
           )}
         </div>
 
         {/* Cinematic Poetry Revealed Staggered */}
-        <div className="space-y-3.5 min-h-[150px] flex flex-col items-center justify-center">
+        <div className="space-y-2.5 sm:space-y-3.5 min-h-[130px] sm:min-h-[150px] flex flex-col items-center justify-center">
           <p
-            className={`font-serif text-xl sm:text-2xl md:text-3xl font-light text-ivory/80 tracking-wide transition-all duration-1000 ease-out ${
+            className={`font-serif text-lg sm:text-2xl md:text-3xl font-light text-ivory/80 tracking-wide transition-all duration-1000 ease-out ${
               step >= 1 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
             }`}
           >
@@ -88,7 +89,7 @@ export const OpeningScene: React.FC<OpeningSceneProps> = ({ onProceed }) => {
           </p>
 
           <p
-            className={`font-serif text-2xl sm:text-3xl md:text-4xl font-normal text-gold-warm italic tracking-wide transition-all duration-1000 ease-out delay-100 ${
+            className={`font-serif text-xl sm:text-3xl md:text-4xl font-normal text-gold-warm italic tracking-wide transition-all duration-1000 ease-out delay-100 ${
               step >= 2 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
             }`}
           >
@@ -96,12 +97,12 @@ export const OpeningScene: React.FC<OpeningSceneProps> = ({ onProceed }) => {
           </p>
 
           <div
-            className={`w-full pt-2 transition-all duration-1000 ease-out ${
+            className={`w-full pt-1.5 transition-all duration-1000 ease-out ${
               step >= 3 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'
             }`}
           >
-            <RoyalDivider className="my-3 opacity-60" />
-            <p className="font-serif text-base sm:text-lg md:text-xl text-rose-muted/95 font-light tracking-wider">
+            <RoyalDivider className="my-2.5 sm:my-3 opacity-60 max-w-xs" />
+            <p className="font-serif text-sm sm:text-lg md:text-xl text-rose-muted/95 font-light tracking-wider">
               Tonight, this little celebration is for you.
             </p>
           </div>
@@ -109,13 +110,13 @@ export const OpeningScene: React.FC<OpeningSceneProps> = ({ onProceed }) => {
 
         {/* Premium Surprise Button */}
         <div
-          className={`mt-10 transition-all duration-1000 ease-out ${
+          className={`mt-6 sm:mt-10 transition-all duration-1000 ease-out ${
             step >= 4 ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-6 scale-95 pointer-events-none'
           }`}
         >
           <button
             onClick={handleOpenSurprise}
-            className="group relative inline-flex items-center justify-center gap-3 px-8 sm:px-10 py-3.5 sm:py-4 rounded-full overflow-hidden transition-all duration-500 active:scale-95 focus:outline-none focus:ring-2 focus:ring-gold-champagne/50"
+            className="group relative inline-flex items-center justify-center gap-2.5 sm:gap-3 px-7 sm:px-10 py-3 sm:py-3.5 rounded-full overflow-hidden transition-all duration-500 active:scale-95 focus:outline-none focus:ring-2 focus:ring-gold-champagne/50"
           >
             {/* Ambient Button Backlight */}
             <div className="absolute inset-0 bg-gradient-to-r from-burgundy via-royalwine to-burgundy opacity-90 group-hover:opacity-100 transition-opacity" />
@@ -125,13 +126,15 @@ export const OpeningScene: React.FC<OpeningSceneProps> = ({ onProceed }) => {
             <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
 
             {/* Button Label */}
-            <span className="relative z-10 font-serif text-lg sm:text-xl font-medium tracking-wider text-ivory group-hover:text-gold-bright flex items-center gap-2.5">
+            <span className="relative z-10 font-serif text-base sm:text-xl font-medium tracking-wider text-ivory group-hover:text-gold-bright flex items-center gap-2">
               Open your surprise
               <Sparkles className="w-4 h-4 text-gold-warm animate-pulse" />
             </span>
           </button>
         </div>
       </div>
+
+      <div className="h-6 sm:h-0" />
     </div>
   );
 };

@@ -54,14 +54,16 @@ export class PalaceSceneManager {
     this.scene = new THREE.Scene();
     this.scene.fog = new THREE.FogExp2(0x09080d, 0.032);
 
+    const aspect = container.clientWidth / container.clientHeight;
+    const initialFov = aspect < 1 ? 62 : 45;
     this.camera = new THREE.PerspectiveCamera(
-      45,
-      container.clientWidth / container.clientHeight,
+      initialFov,
+      aspect,
       0.1,
       120
     );
     // Initial camera: far back in dark entrance corridor
-    this.camera.position.set(0, 3.8, 26);
+    this.camera.position.set(0, 3.8, aspect < 1 ? 30 : 26);
     this.camera.lookAt(this.cameraLookTarget);
 
     // 3. Ambient & Atmospheric Lighting
@@ -355,7 +357,9 @@ export class PalaceSceneManager {
     const width = this.container.clientWidth;
     const height = this.container.clientHeight;
 
-    this.camera.aspect = width / height;
+    const aspect = width / height;
+    this.camera.aspect = aspect;
+    this.camera.fov = aspect < 1 ? 62 : 45;
     this.camera.updateProjectionMatrix();
 
     const maxDpr = width < 768 ? 1.2 : 1.8;

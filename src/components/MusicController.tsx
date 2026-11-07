@@ -28,10 +28,10 @@ export const MusicController: React.FC<MusicControllerProps> = ({
   };
 
   return (
-    <div className="fixed top-4 right-4 z-50 flex items-center gap-2">
+    <div className="fixed top-3 sm:top-4 right-3 sm:right-4 z-50 flex items-center gap-2">
       <button
         onClick={toggleSound}
-        className="group flex items-center gap-2.5 px-3.5 py-2 rounded-full glass-burgundy border border-gold-subtle/50 hover:border-gold-champagne/80 text-ivory transition-all duration-300 shadow-[0_4px_20px_rgba(0,0,0,0.5)] active:scale-95"
+        className="group flex items-center gap-2 px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-full glass-burgundy border border-gold-subtle/50 hover:border-gold-champagne/80 text-ivory transition-all duration-300 shadow-[0_4px_20px_rgba(0,0,0,0.5)] active:scale-95"
         title={isPlaying ? (isMuted ? 'Unmute Diwali Music' : 'Mute Music') : 'Play Ambient Music'}
         aria-label={isPlaying ? (isMuted ? 'Unmute Diwali Music' : 'Mute Music') : 'Play Ambient Music'}
       >

@@ -71,31 +71,31 @@ export const InteractiveDiyasScene: React.FC<InteractiveDiyasSceneProps> = ({
   };
 
   return (
-    <div className="min-h-screen w-full flex flex-col items-center justify-between px-3 sm:px-6 py-6 sm:py-8 relative overflow-hidden select-none pointer-events-none">
+    <div className="min-h-[100dvh] w-full flex flex-col items-center justify-between px-3 sm:px-6 py-4 sm:py-8 pb-24 sm:pb-12 relative overflow-y-auto select-none pointer-events-none">
       {/* Header section */}
-      <header className="relative z-20 text-center max-w-lg mx-auto pt-2 pointer-events-auto">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-burgundy/60 border border-gold-subtle/40 mb-2 backdrop-blur-md">
-          <Sparkles className="w-3.5 h-3.5 text-gold-warm" />
-          <span className="font-serif text-xs sm:text-sm tracking-wider uppercase text-gold-champagne">
+      <header className="relative z-20 text-center max-w-lg mx-auto pt-1 sm:pt-2 pointer-events-auto">
+        <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 py-1 rounded-full bg-burgundy/60 border border-gold-subtle/40 mb-1.5 sm:mb-2 backdrop-blur-md">
+          <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-gold-warm" />
+          <span className="font-serif text-[10px] sm:text-sm tracking-wider uppercase text-gold-champagne">
             Palace Courtyard Sanctuary
           </span>
         </div>
 
-        <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-normal text-gold-light mb-1.5 drop-shadow-md">
+        <h2 className="font-display text-xl sm:text-3xl md:text-4xl font-normal text-gold-light mb-1 drop-shadow-md">
           Kindle Each 3D Diya to Awaken a Wish
         </h2>
-        <p className="font-serif text-xs sm:text-sm md:text-base text-ivory/80 max-w-sm mx-auto">
+        <p className="font-serif text-[11px] sm:text-sm md:text-base text-ivory/80 max-w-sm mx-auto">
           Tap the glowing brass diyas in the courtyard or select below.
         </p>
 
         {/* Progress indicator */}
-        <div className="flex items-center justify-center gap-2 mt-3 text-xs font-serif text-gold-champagne/90">
+        <div className="flex items-center justify-center gap-2 mt-2 sm:mt-3 text-[11px] sm:text-xs font-serif text-gold-champagne/90">
           <span>{litCount} of 5 Diyas Kindled</span>
-          <div className="flex gap-1.5 ml-2">
+          <div className="flex gap-1.5 ml-1 sm:ml-2">
             {litDiyas.map((isLit, i) => (
               <span
                 key={i}
-                className={`w-2.5 h-2.5 rounded-full transition-all duration-500 ${
+                className={`w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full transition-all duration-500 ${
                   isLit
                     ? 'bg-gold-warm shadow-[0_0_10px_#F3D99A]'
                     : 'bg-white/20'
@@ -107,9 +107,9 @@ export const InteractiveDiyasScene: React.FC<InteractiveDiyasSceneProps> = ({
       </header>
 
       {/* Main Interactive Arrangement: 5 Wish Pills */}
-      <main className="relative z-20 w-full max-w-3xl mx-auto my-auto py-4 flex flex-col items-center pointer-events-auto">
+      <main className="relative z-20 w-full max-w-3xl mx-auto my-auto py-2 sm:py-4 flex flex-col items-center pointer-events-auto">
         {/* Responsive Quick Kindling Bar */}
-        <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 w-full px-2 py-2">
+        <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-3 w-full px-1 py-1 sm:py-2">
           {DIYA_DATA.map((diya, index) => {
             const isLit = litDiyas[index];
             const isSelected = activeWishIndex === index;
@@ -117,7 +117,7 @@ export const InteractiveDiyasScene: React.FC<InteractiveDiyasSceneProps> = ({
               <button
                 key={diya.id}
                 onClick={() => onLightDiya(index)}
-                className={`group flex items-center gap-2 px-3 sm:px-4 py-2 rounded-full border transition-all duration-300 backdrop-blur-md active:scale-95 ${
+                className={`group flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-full border transition-all duration-300 backdrop-blur-md active:scale-95 ${
                   isSelected
                     ? 'bg-royalwine/80 border-gold-warm text-gold-bright shadow-[0_0_20px_rgba(243,217,154,0.35)]'
                     : isLit
@@ -125,29 +125,29 @@ export const InteractiveDiyasScene: React.FC<InteractiveDiyasSceneProps> = ({
                     : 'bg-midnight/70 border-white/20 text-ivory/60 hover:border-gold-champagne/60 hover:text-ivory'
                 }`}
               >
-                <span className="text-sm">{isLit ? '🔥' : '🪔'}</span>
-                <span className="font-serif text-xs sm:text-sm tracking-wide">
+                <span className="text-xs sm:text-sm">{isLit ? '🔥' : '🪔'}</span>
+                <span className="font-serif text-[11px] sm:text-sm tracking-wide">
                   {diya.title}
                 </span>
-                {isLit && <Check className="w-3 h-3 text-gold-warm ml-0.5" />}
+                {isLit && <Check className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-gold-warm ml-0.5" />}
               </button>
             );
           })}
         </div>
 
         {/* Dynamic Wish Reveal Card */}
-        <div className="mt-4 w-full max-w-lg px-4 min-h-[140px] flex items-center justify-center">
+        <div className="mt-3 sm:mt-4 w-full max-w-lg px-2 sm:px-4 min-h-[110px] sm:min-h-[140px] flex items-center justify-center">
           {activeWishIndex !== null ? (
-            <div className="glass-card rounded-2xl p-5 sm:p-6 w-full text-center relative border border-gold-champagne/50 shadow-[0_12px_40px_rgba(0,0,0,0.7)] animate-fade-in">
-              <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-burgundy/90 text-[10px] sm:text-[11px] font-royal tracking-widest text-gold-champagne uppercase mb-2">
+            <div className="glass-card rounded-2xl p-4 sm:p-6 w-full text-center relative border border-gold-champagne/50 shadow-[0_12px_40px_rgba(0,0,0,0.7)] animate-fade-in">
+              <div className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-burgundy/90 text-[9px] sm:text-[11px] font-royal tracking-widest text-gold-champagne uppercase mb-1.5">
                 Wish #{activeWishIndex + 1}: {DIYA_DATA[activeWishIndex].title}
               </div>
-              <p className="font-serif text-lg sm:text-xl md:text-2xl text-gold-light italic leading-relaxed">
+              <p className="font-serif text-base sm:text-xl md:text-2xl text-gold-light italic leading-relaxed">
                 &ldquo;{DIYA_DATA[activeWishIndex].wish}&rdquo;
               </p>
             </div>
           ) : (
-            <div className="text-center text-ivory/60 font-serif italic text-xs sm:text-sm bg-midnight/50 px-4 py-2 rounded-full border border-white/10 backdrop-blur-sm">
+            <div className="text-center text-ivory/60 font-serif italic text-[11px] sm:text-sm bg-midnight/50 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-white/10 backdrop-blur-sm">
               Tap any 3D diya in the courtyard to awaken its blessing ✨
             </div>
           )}
@@ -155,19 +155,19 @@ export const InteractiveDiyasScene: React.FC<InteractiveDiyasSceneProps> = ({
 
         {/* Special Celebration Banner once all 5 are lit */}
         {allLit && (
-          <div className="mt-4 w-full max-w-lg px-4 text-center animate-fade-in">
-            <div className="glass-burgundy rounded-2xl p-4 sm:p-5 border-gold-glow">
-              <p className="font-serif text-lg sm:text-2xl text-gold-warm font-normal flex items-center justify-center gap-2">
+          <div className="mt-3 sm:mt-4 w-full max-w-lg px-2 sm:px-4 text-center animate-fade-in">
+            <div className="glass-burgundy rounded-2xl p-3.5 sm:p-5 border-gold-glow">
+              <p className="font-serif text-base sm:text-2xl text-gold-warm font-normal flex items-center justify-center gap-1.5">
                 Look at that... you just made this little world brighter.
-                <Heart className="w-5 h-5 text-rose-petal fill-rose-petal inline animate-pulse" />
+                <Heart className="w-4 h-4 sm:w-5 sm:h-5 text-rose-petal fill-rose-petal inline animate-pulse" />
               </p>
-              <RoyalDivider className="my-2.5 opacity-60" />
+              <RoyalDivider className="my-2 opacity-60" />
               <button
                 onClick={onNext}
-                className="mt-1 group inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-gradient-to-r from-royalwine to-burgundy border border-gold-warm text-ivory font-serif text-sm sm:text-base tracking-wide hover:shadow-[0_0_24px_rgba(243,217,154,0.45)] transition-all duration-300 active:scale-95"
+                className="mt-1 group inline-flex items-center gap-2 px-5 sm:px-6 py-2 sm:py-2.5 rounded-full bg-gradient-to-r from-royalwine to-burgundy border border-gold-warm text-ivory font-serif text-xs sm:text-base tracking-wide hover:shadow-[0_0_24px_rgba(243,217,154,0.45)] transition-all duration-300 active:scale-95"
               >
                 <span>Enter the Royal Pavilion Letter</span>
-                <ChevronRight className="w-4 h-4 text-gold-warm group-hover:translate-x-1 transition-transform" />
+                <ChevronRight className="w-3.5 h-3.5 text-gold-warm group-hover:translate-x-1 transition-transform" />
               </button>
             </div>
           </div>
@@ -179,7 +179,7 @@ export const InteractiveDiyasScene: React.FC<InteractiveDiyasSceneProps> = ({
         {!allLit && (
           <button
             onClick={handleLightAll}
-            className="text-xs font-serif text-ivory/50 hover:text-gold-champagne transition-colors underline underline-offset-4"
+            className="text-[11px] sm:text-xs font-serif text-ivory/50 hover:text-gold-champagne transition-colors underline underline-offset-4"
           >
             Kindle all 5 palace diyas at once ✦
           </button>
