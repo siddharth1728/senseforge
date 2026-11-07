@@ -1,22 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import confetti from 'canvas-confetti';
-import { DiyaGraphic } from '../components/DiyaGraphic';
 import { RoyalDivider } from '../components/RangoliPattern';
 import { soundscape } from '../utils/audio';
 import { Sparkles, Heart, ChevronRight, Check } from 'lucide-react';
 import { DiyaItem } from '../types';
 
-interface InteractiveDiyasSceneProps {
-  onNext: () => void;
-}
-
-const INITIAL_DIYAS: DiyaItem[] = [
+export const DIYA_DATA: Omit<DiyaItem, 'isLit'>[] = [
   {
     id: 1,
     title: 'Happiness',
     keyword: 'Joy & Laughter',
     wish: 'May your smile never lose its magic.',
-    isLit: false,
     color: '#F3D99A',
   },
   {
@@ -24,7 +18,6 @@ const INITIAL_DIYAS: DiyaItem[] = [
     title: 'Peace',
     keyword: 'Serenity',
     wish: 'May your heart always find its beautiful moments of peace.',
-    isLit: false,
     color: '#FFF5E6',
   },
   {
@@ -32,7 +25,6 @@ const INITIAL_DIYAS: DiyaItem[] = [
     title: 'Success',
     keyword: 'Dreams & Courage',
     wish: 'May every dream you hold find its way into reality.',
-    isLit: false,
     color: '#D9B66F',
   },
   {
@@ -40,7 +32,6 @@ const INITIAL_DIYAS: DiyaItem[] = [
     title: 'Beautiful Memories',
     keyword: 'Treasured Moments',
     wish: 'May life surprise you with countless moments worth remembering.',
-    isLit: false,
     color: '#B97883',
   },
   {
@@ -48,38 +39,29 @@ const INITIAL_DIYAS: DiyaItem[] = [
     title: 'Endless Love',
     keyword: 'Warmth & Affection',
     wish: 'May you always be surrounded by warmth, kindness, and love.',
-    isLit: false,
     color: '#FFDF95',
   },
 ];
 
-export const InteractiveDiyasScene: React.FC<InteractiveDiyasSceneProps> = ({ onNext }) => {
-  const [diyas, setDiyas] = useState<DiyaItem[]>(INITIAL_DIYAS);
-  const [activeWishIndex, setActiveWishIndex] = useState<number | null>(null);
+interface InteractiveDiyasSceneProps {
+  litDiyas: boolean[];
+  activeWishIndex: number | null;
+  onLightDiya: (index: number) => void;
+  onNext: () => void;
+}
 
-  const litCount = diyas.filter((d) => d.isLit).length;
+export const InteractiveDiyasScene: React.FC<InteractiveDiyasSceneProps> = ({
+  litDiyas,
+  activeWishIndex,
+  onLightDiya,
+  onNext,
+}) => {
+  const litCount = litDiyas.filter(Boolean).length;
   const allLit = litCount === 5;
 
-  const handleLightDiya = (index: number) => {
-    soundscape.playDiyaChime(index);
-
-    const isFirstTimeLighting = !diyas[index].isLit;
-
-    setDiyas((prev) =>
-      prev.map((d, i) => (i === index ? { ...d, isLit: true } : d))
-    );
-    setActiveWishIndex(index);
-
-    // If this was the 5th diya being lit
-    if (isFirstTimeLighting && litCount === 4) {
-      setTimeout(() => {
-        triggerCelebration();
-      }, 500);
-    }
-  };
-
-  const triggerCelebration = () => {
+  const handleLightAll = () => {
     soundscape.playLetterOpenChime();
+    [0, 1, 2, 3, 4].forEach((idx) => onLightDiya(idx));
     confetti({
       particleCount: 90,
       spread: 75,
@@ -89,44 +71,34 @@ export const InteractiveDiyasScene: React.FC<InteractiveDiyasSceneProps> = ({ on
   };
 
   return (
-    <div className="min-h-screen w-full flex flex-col items-center justify-between px-3 sm:px-6 py-6 sm:py-8 relative overflow-hidden select-none">
-      {/* Dynamic Ambient Radial Lighting */}
-      <div
-        className="absolute inset-0 pointer-events-none transition-all duration-1000"
-        style={{
-          background: allLit
-            ? 'radial-gradient(circle at 50% 45%, rgba(85, 24, 43, 0.65) 0%, rgba(53, 16, 29, 0.85) 50%, #09080D 100%)'
-            : 'radial-gradient(circle at 50% 45%, rgba(53, 16, 29, 0.5) 0%, rgba(9, 8, 13, 0.95) 75%, #09080D 100%)',
-        }}
-      />
-
+    <div className="min-h-screen w-full flex flex-col items-center justify-between px-3 sm:px-6 py-6 sm:py-8 relative overflow-hidden select-none pointer-events-none">
       {/* Header section */}
-      <header className="relative z-20 text-center max-w-lg mx-auto pt-2">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-burgundy/50 border border-gold-subtle/30 mb-2.5 backdrop-blur-sm">
+      <header className="relative z-20 text-center max-w-lg mx-auto pt-2 pointer-events-auto">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-burgundy/60 border border-gold-subtle/40 mb-2 backdrop-blur-md">
           <Sparkles className="w-3.5 h-3.5 text-gold-warm" />
           <span className="font-serif text-xs sm:text-sm tracking-wider uppercase text-gold-champagne">
-            A Diwali Ritual for Bangarammm
+            Palace Courtyard Sanctuary
           </span>
         </div>
 
-        <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-normal text-gold-light mb-1.5">
-          Kindle Each Diya to Awaken a Wish
+        <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-normal text-gold-light mb-1.5 drop-shadow-md">
+          Kindle Each 3D Diya to Awaken a Wish
         </h2>
-        <p className="font-serif text-xs sm:text-sm md:text-base text-ivory/70 max-w-sm mx-auto">
-          Five sacred lights, each holding an intimate blessing for you.
+        <p className="font-serif text-xs sm:text-sm md:text-base text-ivory/80 max-w-sm mx-auto">
+          Tap the glowing brass diyas in the courtyard or select below.
         </p>
 
         {/* Progress indicator */}
-        <div className="flex items-center justify-center gap-2 mt-3 text-xs font-serif text-gold-champagne/80">
+        <div className="flex items-center justify-center gap-2 mt-3 text-xs font-serif text-gold-champagne/90">
           <span>{litCount} of 5 Diyas Kindled</span>
           <div className="flex gap-1.5 ml-2">
-            {diyas.map((d, i) => (
+            {litDiyas.map((isLit, i) => (
               <span
                 key={i}
-                className={`w-2 h-2 rounded-full transition-all duration-500 ${
-                  d.isLit
-                    ? 'bg-gold-warm shadow-[0_0_8px_#F3D99A]'
-                    : 'bg-white/15'
+                className={`w-2.5 h-2.5 rounded-full transition-all duration-500 ${
+                  isLit
+                    ? 'bg-gold-warm shadow-[0_0_10px_#F3D99A]'
+                    : 'bg-white/20'
                 }`}
               />
             ))}
@@ -134,70 +106,49 @@ export const InteractiveDiyasScene: React.FC<InteractiveDiyasSceneProps> = ({ on
         </div>
       </header>
 
-      {/* Main Interactive Arrangement: The 5 Diyas */}
-      <main className="relative z-20 w-full max-w-4xl mx-auto my-auto py-4 flex flex-col items-center">
-        {/* Diyas Arc - Perfectly responsive: single row with flex-wrap:nowrap and overflow-x-auto on small devices */}
-        <div className="flex items-end justify-center gap-2 sm:gap-6 w-full max-w-3xl px-2 py-2">
-          {diyas.map((diya, index) => {
+      {/* Main Interactive Arrangement: 5 Wish Pills */}
+      <main className="relative z-20 w-full max-w-3xl mx-auto my-auto py-4 flex flex-col items-center pointer-events-auto">
+        {/* Responsive Quick Kindling Bar */}
+        <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 w-full px-2 py-2">
+          {DIYA_DATA.map((diya, index) => {
+            const isLit = litDiyas[index];
             const isSelected = activeWishIndex === index;
             return (
-              <div
+              <button
                 key={diya.id}
-                className={`flex flex-col items-center transition-all duration-500 ${
-                  index === 0 || index === 4
-                    ? 'translate-y-2 sm:translate-y-3'
-                    : index === 1 || index === 3
-                    ? 'translate-y-1 sm:translate-y-1'
-                    : '-translate-y-1 sm:-translate-y-2'
+                onClick={() => onLightDiya(index)}
+                className={`group flex items-center gap-2 px-3 sm:px-4 py-2 rounded-full border transition-all duration-300 backdrop-blur-md active:scale-95 ${
+                  isSelected
+                    ? 'bg-royalwine/80 border-gold-warm text-gold-bright shadow-[0_0_20px_rgba(243,217,154,0.35)]'
+                    : isLit
+                    ? 'bg-burgundy/60 border-gold-champagne/40 text-ivory'
+                    : 'bg-midnight/70 border-white/20 text-ivory/60 hover:border-gold-champagne/60 hover:text-ivory'
                 }`}
               >
-                <div
-                  className={`p-1.5 sm:p-2.5 rounded-2xl transition-all duration-500 ${
-                    isSelected
-                      ? 'bg-royalwine/40 ring-1 ring-gold-champagne/70 shadow-[0_0_24px_rgba(243,217,154,0.3)]'
-                      : ''
-                  }`}
-                >
-                  <DiyaGraphic
-                    isLit={diya.isLit}
-                    size="sm"
-                    label={diya.title}
-                    onClick={() => handleLightDiya(index)}
-                    showGlowSpread={true}
-                  />
-                </div>
-
-                {/* Status indicator */}
-                <div className="mt-1 flex items-center gap-1 text-[10px] sm:text-[11px] font-sans">
-                  {diya.isLit ? (
-                    <span className="text-gold-champagne inline-flex items-center gap-0.5 font-medium">
-                      <Check className="w-2.5 h-2.5 text-gold-warm" /> Kindled
-                    </span>
-                  ) : (
-                    <span className="text-ivory/40 animate-pulse text-[9px] sm:text-[10px]">
-                      Tap to light
-                    </span>
-                  )}
-                </div>
-              </div>
+                <span className="text-sm">{isLit ? '🔥' : '🪔'}</span>
+                <span className="font-serif text-xs sm:text-sm tracking-wide">
+                  {diya.title}
+                </span>
+                {isLit && <Check className="w-3 h-3 text-gold-warm ml-0.5" />}
+              </button>
             );
           })}
         </div>
 
         {/* Dynamic Wish Reveal Card */}
-        <div className="mt-6 w-full max-w-lg px-4 min-h-[140px] flex items-center justify-center">
+        <div className="mt-4 w-full max-w-lg px-4 min-h-[140px] flex items-center justify-center">
           {activeWishIndex !== null ? (
-            <div className="glass-card rounded-2xl p-5 sm:p-6 w-full text-center relative border border-gold-champagne/40 shadow-[0_8px_32px_rgba(0,0,0,0.65)] animate-fade-in">
-              <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-burgundy/80 text-[10px] sm:text-[11px] font-royal tracking-widest text-gold-champagne uppercase mb-2">
-                Wish #{activeWishIndex + 1}: {diyas[activeWishIndex].title}
+            <div className="glass-card rounded-2xl p-5 sm:p-6 w-full text-center relative border border-gold-champagne/50 shadow-[0_12px_40px_rgba(0,0,0,0.7)] animate-fade-in">
+              <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-burgundy/90 text-[10px] sm:text-[11px] font-royal tracking-widest text-gold-champagne uppercase mb-2">
+                Wish #{activeWishIndex + 1}: {DIYA_DATA[activeWishIndex].title}
               </div>
               <p className="font-serif text-lg sm:text-xl md:text-2xl text-gold-light italic leading-relaxed">
-                &ldquo;{diyas[activeWishIndex].wish}&rdquo;
+                &ldquo;{DIYA_DATA[activeWishIndex].wish}&rdquo;
               </p>
             </div>
           ) : (
-            <div className="text-center text-ivory/50 font-serif italic text-xs sm:text-sm">
-              Tap any diya above to reveal its blessing for you ✨
+            <div className="text-center text-ivory/60 font-serif italic text-xs sm:text-sm bg-midnight/50 px-4 py-2 rounded-full border border-white/10 backdrop-blur-sm">
+              Tap any 3D diya in the courtyard to awaken its blessing ✨
             </div>
           )}
         </div>
@@ -213,9 +164,9 @@ export const InteractiveDiyasScene: React.FC<InteractiveDiyasSceneProps> = ({ on
               <RoyalDivider className="my-2.5 opacity-60" />
               <button
                 onClick={onNext}
-                className="mt-1 group inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-gradient-to-r from-royalwine to-burgundy border border-gold-warm text-ivory font-serif text-sm sm:text-base tracking-wide hover:shadow-[0_0_22px_rgba(243,217,154,0.45)] transition-all duration-300 active:scale-95"
+                className="mt-1 group inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-gradient-to-r from-royalwine to-burgundy border border-gold-warm text-ivory font-serif text-sm sm:text-base tracking-wide hover:shadow-[0_0_24px_rgba(243,217,154,0.45)] transition-all duration-300 active:scale-95"
               >
-                <span>Read your letter for Bangarammm</span>
+                <span>Enter the Royal Pavilion Letter</span>
                 <ChevronRight className="w-4 h-4 text-gold-warm group-hover:translate-x-1 transition-transform" />
               </button>
             </div>
@@ -223,17 +174,14 @@ export const InteractiveDiyasScene: React.FC<InteractiveDiyasSceneProps> = ({ on
         )}
       </main>
 
-      {/* Navigation skip/continue helper */}
-      <footer className="relative z-20 pb-2">
+      {/* Navigation skip helper */}
+      <footer className="relative z-20 pb-2 pointer-events-auto">
         {!allLit && (
           <button
-            onClick={() => {
-              setDiyas((prev) => prev.map((d) => ({ ...d, isLit: true })));
-              triggerCelebration();
-            }}
-            className="text-xs font-serif text-ivory/40 hover:text-gold-champagne transition-colors underline underline-offset-4"
+            onClick={handleLightAll}
+            className="text-xs font-serif text-ivory/50 hover:text-gold-champagne transition-colors underline underline-offset-4"
           >
-            Light all 5 diyas at once ✦
+            Kindle all 5 palace diyas at once ✦
           </button>
         )}
       </footer>
