@@ -14,3 +14,4 @@ export interface AudioState {
   isMuted: boolean;
   isInitialized: boolean;
 }
+

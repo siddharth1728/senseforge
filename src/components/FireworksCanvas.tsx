@@ -10,6 +10,7 @@ interface Particle {
   color: string;
   size: number;
   gravity: number;
+  flicker: boolean;
 }
 
 interface Firework {
@@ -48,51 +49,54 @@ export const FireworksCanvas: React.FC<FireworksCanvasProps> = ({
     let fireworks: Firework[] = [];
     let particles: Particle[] = [];
 
+    // Luxury Golden Palette
     const luxuryColors = [
       '#F3D99A', // Warm gold
       '#D9B66F', // Champagne gold
-      '#FFF5E6', // Ivory
+      '#FFF5E6', // Pure Ivory
+      '#FFDF95', // Radiant gold
+      '#E89A7B', // Rose amber
       '#B97883', // Muted rose
-      '#FFDF95', // Bright gold
-      '#E69B72', // Warm amber
     ];
 
     const createFirework = (customX?: number) => {
       const x = customX !== undefined ? customX : Math.random() * (width * 0.8) + width * 0.1;
-      const targetY = Math.random() * (height * 0.45) + height * 0.1;
+      const targetY = Math.random() * (height * 0.42) + height * 0.08;
       const color = luxuryColors[Math.floor(Math.random() * luxuryColors.length)];
       fireworks.push({
         x,
         y: height,
         targetY,
-        vy: -(Math.random() * 4 + 7),
+        vy: -(Math.random() * 4 + 7.5),
         exploded: false,
         color,
       });
     };
 
+    // Golden Willow Weeping Sparkle Explosion
     const explode = (x: number, y: number, color: string) => {
       if (onBurst) onBurst();
-      const count = intensity === 'celebration' ? 65 : 40;
+      const count = intensity === 'celebration' ? 70 : 42;
       for (let i = 0; i < count; i++) {
-        const angle = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.4;
-        const speed = Math.random() * 4.5 + 1.2;
+        const angle = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.35;
+        const speed = Math.random() * 4.2 + 1.2;
         particles.push({
           x,
           y,
           vx: Math.cos(angle) * speed,
           vy: Math.sin(angle) * speed,
           alpha: 1,
-          decay: Math.random() * 0.015 + 0.012,
+          decay: Math.random() * 0.013 + 0.01,
           color,
-          size: Math.random() * 2 + 1,
-          gravity: 0.04,
+          size: Math.random() * 2 + 1.2,
+          gravity: 0.045, // Soft weeping willow gravity
+          flicker: Math.random() > 0.4,
         });
       }
     };
 
     let lastLaunch = 0;
-    const launchInterval = intensity === 'celebration' ? 850 : 2200;
+    const launchInterval = intensity === 'celebration' ? 950 : 2400;
 
     const handleResize = () => {
       if (!canvas) return;
@@ -108,7 +112,7 @@ export const FireworksCanvas: React.FC<FireworksCanvasProps> = ({
       // Automatic launch
       if (timestamp - lastLaunch > launchInterval) {
         createFirework();
-        if (intensity === 'celebration' && Math.random() > 0.4) {
+        if (intensity === 'celebration' && Math.random() > 0.45) {
           createFirework();
         }
         lastLaunch = timestamp;
@@ -134,14 +138,14 @@ export const FireworksCanvas: React.FC<FireworksCanvasProps> = ({
         }
       }
 
-      // Update explosion particles
+      // Update explosion weeping particles
       for (let i = particles.length - 1; i >= 0; i--) {
         const p = particles[i];
         p.x += p.vx;
         p.y += p.vy;
         p.vy += p.gravity;
-        p.vx *= 0.98;
-        p.vy *= 0.98;
+        p.vx *= 0.982;
+        p.vy *= 0.982;
         p.alpha -= p.decay;
 
         if (p.alpha <= 0) {
@@ -150,12 +154,13 @@ export const FireworksCanvas: React.FC<FireworksCanvasProps> = ({
         }
 
         ctx.save();
-        ctx.globalAlpha = p.alpha;
+        const displayAlpha = p.flicker && Math.random() > 0.6 ? p.alpha * 0.5 : p.alpha;
+        ctx.globalAlpha = displayAlpha;
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
         ctx.fillStyle = p.color;
         ctx.shadowColor = p.color;
-        ctx.shadowBlur = 6;
+        ctx.shadowBlur = 7;
         ctx.fill();
         ctx.restore();
       }
@@ -176,7 +181,7 @@ export const FireworksCanvas: React.FC<FireworksCanvasProps> = ({
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 pointer-events-none z-15 opacity-80"
+      className="fixed inset-0 pointer-events-none z-15 opacity-85"
       aria-hidden="true"
     />
   );

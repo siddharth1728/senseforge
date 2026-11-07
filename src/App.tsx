@@ -22,7 +22,7 @@ export const App: React.FC = () => {
       setCurrentScene(scene);
       setIsTransitioning(false);
       window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, 400);
+    }, 450);
   }, []);
 
   const handleNext = () => {
@@ -52,7 +52,7 @@ export const App: React.FC = () => {
     transitionTo('opening');
   };
 
-  // Keyboard accessibility: Left / Right arrows
+  // Keyboard accessibility
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'ArrowRight' && currentScene !== 'opening') {
@@ -64,8 +64,8 @@ export const App: React.FC = () => {
   }, [currentScene]);
 
   return (
-    <div className="relative min-h-screen bg-[#09080D] text-[#FFF5E6] font-sans overflow-x-hidden">
-      {/* Persistent Floating Golden Particles */}
+    <div className="relative min-h-screen bg-[#09080D] text-[#FFF5E6] font-sans overflow-x-hidden selection:bg-[#55182B] selection:text-[#F3D99A]">
+      {/* Persistent Floating Golden Motes */}
       <ParticleBackground />
 
       {/* Top Floating Music Controller */}
@@ -73,8 +73,10 @@ export const App: React.FC = () => {
 
       {/* Scene Content with Smooth Cinematic Cross-fade */}
       <div
-        className={`w-full min-h-screen transition-opacity duration-500 ease-in-out ${
-          isTransitioning ? 'opacity-0 scale-[0.99] filter blur-[2px]' : 'opacity-100 scale-100 filter-none'
+        className={`w-full min-h-screen transition-all duration-500 ease-out ${
+          isTransitioning
+            ? 'opacity-0 scale-[0.985] filter blur-[3px]'
+            : 'opacity-100 scale-100 filter-none'
         }`}
       >
         {currentScene === 'opening' && (

@@ -7,61 +7,36 @@ interface WishesSceneProps {
 }
 
 const WISHES = [
-  {
-    id: 1,
-    text: 'May your days be filled with happiness.',
-    tag: 'Joy',
-    icon: '✨',
-  },
-  {
-    id: 2,
-    text: 'May your dreams grow bigger and brighter.',
-    tag: 'Aspirations',
-    icon: '🌟',
-  },
-  {
-    id: 3,
-    text: 'May you always find reasons to smile.',
-    tag: 'Smile',
-    icon: '💫',
-  },
-  {
-    id: 4,
-    text: 'May peace find its way into your heart.',
-    tag: 'Serenity',
-    icon: '🕊️',
-  },
-  {
-    id: 5,
-    text: 'May beautiful things keep finding you.',
-    tag: 'Wonder',
-    icon: '🌸',
-  },
+  'May your days be filled with happiness.',
+  'May your dreams grow bigger and brighter.',
+  'May you always find reasons to smile.',
+  'May peace find its way into your heart.',
+  'May beautiful things keep finding you.',
 ];
 
 export const WishesScene: React.FC<WishesSceneProps> = ({ onNext }) => {
   return (
-    <div className="min-h-screen w-full flex flex-col items-center justify-between px-4 py-8 relative overflow-hidden select-none">
+    <div className="min-h-screen w-full flex flex-col items-center justify-between px-3 sm:px-6 py-8 relative overflow-hidden select-none">
       {/* Background Ambience - Lighter and Warmer than opening as requested */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          background: 'radial-gradient(circle at 50% 30%, rgba(85, 24, 43, 0.45) 0%, rgba(185, 120, 131, 0.12) 40%, rgba(9, 8, 13, 0.98) 90%)',
+          background: 'radial-gradient(circle at 50% 28%, rgba(85, 24, 43, 0.45) 0%, rgba(185, 120, 131, 0.12) 42%, rgba(9, 8, 13, 0.98) 90%)',
         }}
       />
 
       {/* Decorative Golden Ambient Aura */}
       <div
-        className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[550px] h-[550px] rounded-full pointer-events-none opacity-20"
+        className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[550px] h-[550px] rounded-full pointer-events-none opacity-25"
         style={{
           background: 'radial-gradient(circle, #F3D99A 0%, #35101D 70%, transparent 100%)',
-          filter: 'blur(70px)',
+          filter: 'blur(75px)',
         }}
       />
 
       {/* Header */}
       <header className="relative z-20 text-center max-w-xl mx-auto pt-2">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-burgundy/50 border border-gold-subtle/40 mb-3 backdrop-blur-sm">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-burgundy/50 border border-gold-subtle/40 mb-2.5 backdrop-blur-sm">
           <MarigoldMotif size={18} />
           <span className="font-royal text-xs tracking-widest uppercase text-gold-champagne">
             Five Blessings
@@ -72,45 +47,39 @@ export const WishesScene: React.FC<WishesSceneProps> = ({ onNext }) => {
         <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-light text-gold-light mb-2">
           Wishes for Bangarammm
         </h2>
-        <p className="font-serif text-sm sm:text-base text-rose-muted/90 italic">
+        <p className="font-serif text-sm sm:text-base text-rose-muted/95 italic">
           Every thought whispered with genuine warmth and light.
         </p>
 
         <RoyalDivider className="my-4 max-w-xs opacity-60" />
       </header>
 
-      {/* Staggered Wishes Stack */}
-      <main className="relative z-20 w-full max-w-xl mx-auto my-auto py-4 flex flex-col gap-3.5">
-        {WISHES.map((wish, index) => (
+      {/* Staggered Floating Blessing Plaques */}
+      <main className="relative z-20 w-full max-w-lg mx-auto my-auto py-2 flex flex-col gap-3.5">
+        {WISHES.map((wishText, index) => (
           <div
-            key={wish.id}
-            className="group relative rounded-2xl glass-card p-4 sm:p-5 border border-gold-champagne/30 hover:border-gold-warm transition-all duration-500 hover:shadow-[0_8px_25px_rgba(217,182,111,0.2)] hover:-translate-y-0.5"
+            key={index}
+            className="group relative rounded-2xl glass-card p-4 sm:p-5 border border-gold-champagne/35 hover:border-gold-warm transition-all duration-500 hover:shadow-[0_8px_25px_rgba(217,182,111,0.22)] hover:-translate-y-0.5"
             style={{
-              animationDelay: `${index * 150}ms`,
+              animationDelay: `${index * 140}ms`,
             }}
           >
-            <div className="flex items-center gap-4">
-              {/* Diya / Star number icon */}
-              <div className="w-10 h-10 rounded-full bg-burgundy border border-gold-champagne/50 flex items-center justify-center shrink-0 shadow-[0_0_12px_rgba(217,182,111,0.2)] group-hover:scale-105 group-hover:border-gold-warm transition-transform">
-                <span className="font-royal text-sm text-gold-champagne">0{wish.id}</span>
+            <div className="flex items-center gap-3.5 sm:gap-4">
+              {/* Sacred Diya / Lotus Emblem */}
+              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-burgundy/90 border border-gold-champagne/50 flex items-center justify-center shrink-0 shadow-[0_0_12px_rgba(217,182,111,0.2)] group-hover:scale-105 group-hover:border-gold-warm transition-transform">
+                <span className="text-sm">🪔</span>
               </div>
 
-              {/* Wish content */}
+              {/* Wish Statement */}
               <div className="flex-1">
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="font-royal text-[10px] tracking-widest uppercase text-gold-champagne/75">
-                    {wish.tag}
-                  </span>
-                  <span className="text-xs text-rose-muted">✦</span>
-                </div>
                 <p className="font-serif text-base sm:text-lg md:text-xl text-ivory font-normal leading-snug group-hover:text-gold-light transition-colors">
-                  &ldquo;{wish.text}&rdquo;
+                  &ldquo;{wishText}&rdquo;
                 </p>
               </div>
 
               {/* End Sparkle */}
-              <div className="text-sm opacity-50 group-hover:opacity-100 transition-opacity">
-                <Sparkles className="w-4 h-4 text-gold-warm" />
+              <div className="text-sm opacity-40 group-hover:opacity-100 transition-opacity">
+                <Sparkles className="w-3.5 h-3.5 text-gold-warm" />
               </div>
             </div>
           </div>

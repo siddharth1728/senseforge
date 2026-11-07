@@ -115,3 +115,4 @@
 ### Option B: Deploy via Netlify
 1. Run `npm run build` to generate the `dist` folder.
 2. Drag and drop the `dist` folder into [Netlify Drop](https://app.netlify.com/drop) or connect your GitHub repository.
+

@@ -54,3 +54,4 @@ export const NavigationControls: React.FC<NavigationControlsProps> = ({
     </nav>
   );
 };
+

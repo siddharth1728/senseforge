@@ -61,3 +61,4 @@ export const MusicController: React.FC<MusicControllerProps> = ({
     </div>
   );
 };
+
